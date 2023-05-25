@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    public float speed = 5f;
+    public float speed = 5f;        // starting speed value
     public float weight = 1f;
     public float moveDistance = 1f;
 
@@ -31,9 +31,14 @@ public class BallController : MonoBehaviour
         transform.position = Vector3.zero;
     }
 
-    public void AdjustSpeed(float newSpeed)
+    public void IncreaseSpeed()
     {
-        speed = newSpeed;
+        speed += 1;
+    }
+
+    public void DecreaseSpeed()
+    {
+        speed -= 1;
     }
 
     public void AdjustWeight(float newWeight)
@@ -49,10 +54,10 @@ public class BallController : MonoBehaviour
             switch (direction)
             {
                 case "Right":
-                    transform.position += new Vector3(moveDistance, 0, 0);
+                    transform.position += new Vector3(0, 0, moveDistance);
                     break;
                 case "Left":
-                    transform.position -= new Vector3(moveDistance, 0, 0);
+                    transform.position -= new Vector3(0, 0, moveDistance);
                     break;
             }
         }

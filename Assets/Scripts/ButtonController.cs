@@ -4,29 +4,58 @@ using UnityEngine;
 
 public class ButtonController : MonoBehaviour
 {
+    public BallController ballController;
     public string buttonFunction;
-    public InputController inputController;
+
+    public Material normalMaterial;
+    public Material pressedMaterial;
+
+    private MeshRenderer meshRenderer;
+
+    void Start()
+    {
+        meshRenderer = GetComponent<MeshRenderer>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Hand")
+        if (other.gameObject.CompareTag("Hand"))
         {
-            if (buttonFunction == "Launch" || buttonFunction == "Reset")
+            switch (buttonFunction)
             {
-                inputController.OnKeyPress(buttonFunction);
+                case "Launch":
+                    ballController.Launch();
+                    meshRenderer.material = pressedMaterial;
+                    break;
+                case "Reset":
+                    ballController.Reset();
+                    meshRenderer.material = pressedMaterial;
+                    break;
+                case "Up":
+                    ballController.IncreaseSpeed();
+                    meshRenderer.material = pressedMaterial;
+                    break;
+                case "Down":
+                    ballController.DecreaseSpeed();
+                    meshRenderer.material = pressedMaterial;
+                    break;
+                case "Left":
+                    ballController.MoveBall("Left");
+                    meshRenderer.material = pressedMaterial;
+                    break;
+                case "Right":
+                    ballController.MoveBall("Right");
+                    meshRenderer.material = pressedMaterial;
+                    break;
             }
-            else if (buttonFunction == "Up" || buttonFunction == "Down" || buttonFunction == "Left" || buttonFunction == "Right")
-            {
-                inputController.OnArrowPress(buttonFunction);
-            }
-            else
-            {
-                float number;
-                if (float.TryParse(buttonFunction, out number))
-                {
-                    inputController.ball.AdjustWeight(number);
-                }
-            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Hand"))
+        {
+            meshRenderer.material = normalMaterial;
         }
     }
 }
