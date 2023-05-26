@@ -4,21 +4,29 @@ using UnityEngine;
 
 public class ToggleScript : MonoBehaviour
 {
-    public MonoBehaviour scriptToToggle;
+    public XRBaseInteractable interactableToToggle;
+
+    private void Start()
+    {
+        if (interactableToToggle != null)
+        {
+            interactableToToggle.enabled = false;
+        }
+    }
 
     public void ToggleOn()
     {
-        if (scriptToToggle != null)
+        if (interactableToToggle != null)
         {
-            scriptToToggle.enabled = true;
+            interactableToToggle.enabled = true;
         }
     }
 
     public void ToggleOff()
     {
-        if (scriptToToggle != null)
+        if (interactableToToggle != null)
         {
-            scriptToToggle.enabled = false;
+            interactableToToggle.enabled = false;
         }
     }
 }
