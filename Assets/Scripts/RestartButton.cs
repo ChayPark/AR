@@ -5,12 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class RestartButton : MonoBehaviour
 {
-    public void RestartGame()
+    public void RestartGame(string sceneName)
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(sceneName);
     }
-    public void RestartGameWrapper()
+    public void ReloadCurrenrtScene()
     {
-        RestartGame();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
