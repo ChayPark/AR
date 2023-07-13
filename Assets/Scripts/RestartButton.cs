@@ -5,64 +5,55 @@ using UnityEngine.SceneManagement;
 
 public class RestartButton : MonoBehaviour
 {
-    public GameObject pin1;
-    public GameObject pin2;
-    public GameObject pin3;
-    public GameObject pin4;
-    public GameObject pin5;
-    public GameObject pin6;
-    public GameObject pin7;
-    public GameObject pin8;
-    public GameObject pin9;
-    public GameObject pin10;
-
+    public GameObject pinPrefab;
     public GameObject ball;
 
-    public Vector3 initialPin1Position;
-    public Vector3 initialPin2Position;
-    public Vector3 initialPin3Position;
-    public Vector3 initialPin4Position;
-    public Vector3 initialPin5Position;
-    public Vector3 initialPin6Position;
-    public Vector3 initialPin7Position;
-    public Vector3 initialPin8Position;
-    public Vector3 initialPin9Position;
-    public Vector3 initialPin10Position;
+    private GameObject[] pins;
+    private Vector3[] initialPinPositions;
+    private Vector3 initialBallPosition;
 
-    public Vector3 initialBallPosition;
+    private Rigidbody ballRigidbody;
+
+    public BallController ballController;
 
     private void Start()
     {
-        // Save initial positions
-        initialPin1Position = pin1.transform.position;
-        initialPin2Position = pin2.transform.position;
-        initialPin3Position = pin3.transform.position;
-        initialPin4Position = pin4.transform.position;
-        initialPin5Position = pin5.transform.position;
-        initialPin6Position = pin6.transform.position;
-        initialPin7Position = pin7.transform.position;
-        initialPin8Position = pin8.transform.position;
-        initialPin9Position = pin9.transform.position;
-        initialPin10Position = pin10.transform.position;
+        // Get the current pins in the scene
+        pins = GameObject.FindGameObjectsWithTag("Pin");
+
+        // Initialize the array for initial positions
+        initialPinPositions = new Vector3[pins.Length];
+
+        for (int i = 0; i < pins.Length; i++)
+        {
+            // Save initial positions
+            initialPinPositions[i] = pins[i].transform.position;
+        }
 
         initialBallPosition = ball.transform.position;
+        ballRigidbody = ball.GetComponent<Rigidbody>();
     }
 
     public void ResetPositions()
     {
-        // Reset pin positions
-        pin1.transform.position = initialPin1Position;
-        pin2.transform.position = initialPin2Position;
-        pin3.transform.position = initialPin3Position;
-        pin4.transform.position = initialPin4Position;
-        pin5.transform.position = initialPin5Position;
-        pin6.transform.position = initialPin6Position;
-        pin7.transform.position = initialPin7Position;
-        pin8.transform.position = initialPin8Position;
-        pin9.transform.position = initialPin9Position;
-        pin10.transform.position = initialPin10Position;
+        // Destroy existing pins
+        foreach (GameObject pin in pins)
+        {
+            Destroy(pin);
+        }
 
-        // Reset ball position
+        // Create new pins at the initial positions
+        pins = new GameObject[initialPinPositions.Length];
+        for (int i = 0; i < initialPinPositions.Length; i++)
+        {
+            pins[i] = Instantiate(pinPrefab, initialPinPositions[i], Quaternion.Euler(-90, 0, 0));
+        }
+
+        // Reset ball position and stop its movement
         ball.transform.position = initialBallPosition;
+        ballRigidbody.velocity = Vector3.zero;
+        ballRigidbody.angularVelocity = Vector3.zero;
+
+        ballController.Reset();
     }
 }

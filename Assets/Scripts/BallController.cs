@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    public float speed = 5f;        // starting speed value
-    public float weight = 1f;
-    public float moveDistance = 1f;
+    public float speed;        // starting speed value
+    public float weight;
+    public float moveDistance;
 
     private Rigidbody rb;
     private bool isLaunched = false;
@@ -20,7 +20,9 @@ public class BallController : MonoBehaviour
     public void Launch()
     {
         isLaunched = true;
-        rb.AddForce(new Vector3(0, 0, 1) * speed, ForceMode.Impulse);
+        rb.isKinematic = false;
+
+        rb.AddForce(new Vector3(-1, 0, 0) * speed, ForceMode.Impulse);
     }
 
     public void Reset()
@@ -28,7 +30,6 @@ public class BallController : MonoBehaviour
         isLaunched = false;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        transform.position = Vector3.zero;
     }
 
     public void IncreaseSpeed()
